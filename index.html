@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlpineJS Bootcamp Widgets</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>AlpineJS Bootcamp Functions</h1>
+    
+   
+    <div class="function" x-data="greetFunction()">
+        <h2>Greet Function</h2>
+        <input type="text" x-model="name" placeholder="Enter your name">
+        <select x-model="language">
+            <option value="en">English</option>
+            <option value="is">Isizulu</option>
+            <option value="so">Sotho</option>
+        </select>
+        <button @click="greet">Greet</button>
+        <p x-text="greetingMessage"></p>
+    </div>
+
+   
+    <div class="function1" x-data="transportFeeFunction()">
+        <h2>Transport Fee Function</h2>
+        <label>
+            <input type="radio" name="shift" value="morning" x-model="shift"> Morning
+        </label>
+        <label>
+            <input type="radio" name="shift" value="afternoon" x-model="shift"> Afternoon
+        </label>
+        <label>
+            <input type="radio" name="shift" value="night" x-model="shift"> Night
+        </label>
+        <button @click="calculateFee">Calculate Fee</button>
+        <p x-text="feeMessage"></p>
+    </div>
+
+    
+    <div class="function2" x-data="phoneBillFunction()">
+        <h2>Total Phone Bill Function</h2>
+        <input type="text" x-model="phoneString" placeholder="Enter phone usage string">
+        <button @click="calculateBill">Calculate Bill</button>
+        <p x-text="billMessage"></p>
+    </div>
+
+    
+    <div class="function3" x-data="airtimeFunction()">
+        <h2>Enough Airtime Function</h2>
+        <input type="text" x-model="usageString" placeholder="Enter usage string">
+        <input type="number" x-model="availableAirtime" placeholder="Enter available airtime">
+        <button @click="checkAirtime">Check Airtime</button>
+        <p x-text="airtimeMessage"></p>
+    </div>
+
+    <script>
+        function greetFunction() {
+            return {
+                name: '',
+                language: 'en',
+                greetingMessage: '',
+                greet() {
+                    const greetings = {
+                        en: `Hello, ${this.name}!`,
+                        is: `Sawubona, ${this.name}!`,
+                        so: `Domelung, ${this.name}!`
+                    };
+                    this.greetingMessage = greetings[this.language];
+                }
+            };
+        }
+
+        function transportFeeFunction() {
+            return {
+                shift: '',
+                feeMessage: '',
+                calculateFee() {
+                    const fees = {
+                        morning: 'R20',
+                        afternoon: 'R10',
+                        night: 'free'
+                    };
+                    this.feeMessage = `Transport fee is ${fees[this.shift]}`;
+                }
+            };
+        }
+
+        function phoneBillFunction() {
+            return {
+                phoneString: '',
+                billMessage: '',
+                calculateBill() {
+                    const calls = this.phoneString.split(',').filter(s => s.trim() === 'call').length;
+                    const sms = this.phoneString.split(',').filter(s => s.trim() === 'sms').length;
+                    const total = (calls * 2.75) + (sms * 0.65);
+                    this.billMessage = `Total phone bill is R${total.toFixed(2)}`;
+                }
+            };
+        }
+
+        function airtimeFunction() {
+            return {
+                usageString: '',
+                availableAirtime: 0,
+                airtimeMessage: '',
+                checkAirtime() {
+                    const calls = this.usageString.split(',').filter(s => s.trim() === 'call').length;
+                    const sms = this.usageString.split(',').filter(s => s.trim() === 'sms').length;
+                    const totalCost = (calls * 2.75) + (sms * 0.65);
+                    const remainingAirtime = this.availableAirtime - totalCost;
+                    this.airtimeMessage = remainingAirtime >= 0 ? 
+                        `You have enough airtime. Remaining: R${remainingAirtime.toFixed(2)}` : 
+                        'Sorry, you do not have enough airtime.';
+                }
+            };
+        }
+    </script>
+      <script src="./greet.js" defer ></script>
+      <script src="./transportfee.js" defer ></script>
+      <script src="./phonebill.js" defer ></script>
+      <script src="./enoughairtime.js" defer ></script>
+</body>
+</html>
